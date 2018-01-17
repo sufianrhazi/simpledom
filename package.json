@@ -1,0 +1,25 @@
+{
+  "name": "simpledom",
+  "version": "0.9.9",
+  "description": "A simple typescript-oriented DOM manipulation API",
+  "homepage": "https://abstract.properties/work/simpledom.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sufianrhazi/simpledom.git"
+  },
+  "main": "dist/es5-commonjs/simpledom.js",
+  "types": "dist/es5-commonjs/simpledom.d.ts",
+  "scripts": {
+    "dist": "s/dist"
+  },
+  "keywords": [
+    "dom",
+    "typescript"
+  ],
+  "author": "Sufian Rhazi <sufian@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "amdclean": "^2.7.0",
+    "typescript": "^2.6.0"
+  }
+}
