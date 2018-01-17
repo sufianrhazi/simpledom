@@ -90,18 +90,136 @@ export function allFrom<T extends Element>(kind: Constructor<T>, root: Element |
  * @param options the third parameter to addEventListener (for capture, etc...)
  * @return a function that removes the added event handler from the DOM
  */
-export function on<K extends keyof ElementEventMap>(root: Element | Document, type: K, selector: string, handler: (this: Element, ev: ElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions | undefined): () => void;
-export function on(root: Element | Document, type: string, selector: string, handler: (this: Element, ev: Event) => any, options?: boolean | AddEventListenerOptions | undefined): () => void {
+export function on<E extends Element, K extends keyof DocumentEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: DocumentEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof ElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: ElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof HTMLBodyElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: HTMLBodyElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof HTMLElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: HTMLElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof HTMLFrameElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: HTMLFrameElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof HTMLFrameSetElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: HTMLFrameSetElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof HTMLIFrameElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: HTMLIFrameElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof HTMLMarqueeElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: HTMLMarqueeElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof HTMLMediaElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: HTMLMediaElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof HTMLVideoElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: HTMLVideoElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof SVGElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: SVGElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof SVGSVGElementEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: SVGSVGElementEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element, K extends keyof WindowEventMap>(
+    root: Element | Document,
+    type: K,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: WindowEventMap[K], selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element>(
+    root: Element | Document,
+    type: string,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: Event, selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void;
+export function on<E extends Element>(
+    root: Element | Document,
+    type: string,
+    kind: Constructor<E>,
+    selector: string,
+    handler: (this: E, ev: any, selected: E) => any,
+    options?: boolean | AddEventListenerOptions | undefined
+): () => void {
         function listener(event: Event) {
-        for (let potential of allFrom(Element, root, selector)) {
+        for (let potential of allFrom(kind, root, selector)) {
             if (potential.contains(event.target as Node)) {
-                return handler.call(potential, event);
+                return handler.call(potential, event, potential);
             }
         }
         return false;
     }
     root.addEventListener(type, listener, options);
-    return () => root.removeEventListener(type, handler);
+    return () => root.removeEventListener(type, listener);
 }
 
 /**
