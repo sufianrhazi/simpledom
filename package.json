@@ -1,6 +1,6 @@
 {
   "name": "@srhazi/simpledom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple typescript-oriented DOM manipulation API",
   "homepage": "https://abstract.properties/work/simpledom.html",
   "repository": {
