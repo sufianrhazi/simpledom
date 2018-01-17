@@ -1,5 +1,5 @@
 {
-  "name": "simpledom",
+  "name": "@srhazi/simpledom",
   "version": "0.9.9",
   "description": "A simple typescript-oriented DOM manipulation API",
   "homepage": "https://abstract.properties/work/simpledom.html",
