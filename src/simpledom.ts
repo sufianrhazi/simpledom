@@ -26,7 +26,7 @@ export class TypeMismatch extends SimpleDOMError {}
  * @param selector CSS selector to use for the search
  */
 export function one<T extends Element>(kind: Constructor<T>, selector: string): T {
-    return oneFrom(kind, document, selector);
+    return oneFrom(document, kind, selector);
 }
 
 /**
@@ -34,11 +34,11 @@ export function one<T extends Element>(kind: Constructor<T>, selector: string): 
  * 
  * If the first element that matches `selector` is not of type `kind`, an exception is thrown.
  * 
- * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param root the element or document subtree to search
+ * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param selector CSS selector to use for the search
  */
-export function oneFrom<T extends Element>(kind: Constructor<T>, root: Element | Document, selector: string): T {
+export function oneFrom<T extends Element>(root: Element | Document, kind: Constructor<T>, selector: string): T {
     var el = root.querySelector(selector);
     if (el === null) {
         throw new NotFound(`Selector "${selector}" not found`);
@@ -58,7 +58,7 @@ export function oneFrom<T extends Element>(kind: Constructor<T>, root: Element |
  * @param selector CSS selector to use for the search
  */
 export function all<T extends Element>(kind: Constructor<T>, selector: string): T[] {
-    return allFrom(kind, document, selector);
+    return allFrom(document, kind, selector);
 }
 
 /**
@@ -66,11 +66,11 @@ export function all<T extends Element>(kind: Constructor<T>, selector: string): 
  * 
  * If any of the elements that match `selector` is not of type `kind`, an exception is thrown.
  * 
- * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param root the element or document subtree to search
+ * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param selector CSS selector to use for the search
  */
-export function allFrom<T extends Element>(kind: Constructor<T>, root: Element | Document, selector: string): T[] {
+export function allFrom<T extends Element>(root: Element | Document, kind: Constructor<T>, selector: string): T[] {
     var els = Array.from(root.querySelectorAll(selector));
     if (!allAre<T>(els, isConstructedBy, kind)) {
         throw new TypeMismatch(`Element at selector "${selector}" is not a ${kind.name}`);
@@ -85,6 +85,7 @@ export function allFrom<T extends Element>(kind: Constructor<T>, root: Element |
  * 
  * @param root element that is the root of events to care about
  * @param type the event type to listen for
+ * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param selector CSS selector to refine the source of events
  * @param handler the event handler
  * @param options the third parameter to addEventListener (for capture, etc...)
@@ -211,7 +212,7 @@ export function on<E extends Element>(
     options?: boolean | AddEventListenerOptions | undefined
 ): () => void {
         function listener(event: Event) {
-        for (let potential of allFrom(kind, root, selector)) {
+        for (let potential of allFrom(root, kind, selector)) {
             if (potential.contains(event.target as Node)) {
                 return handler.call(potential, event, potential);
             }
