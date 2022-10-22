@@ -4,7 +4,7 @@ A tiny, simple, strict, typescript-oriented DOM manipulation API.
 
 * Zero dependencies
 * Requires ES6 runtime (for `Array.from()`)
-* Library size: 1,975 bytes minified (861 bytes gzip-compressed)
+* Library size: 2,064 bytes minified (877 bytes gzip-compressed)
 * Works well with `tsc --strict`
 
 
@@ -16,11 +16,12 @@ A tiny, simple, strict, typescript-oriented DOM manipulation API.
 ## Building
 
 * Note: Minified standalone build depends on [closure-compiler](http://code.google.com/closure/compiler).
-* Version `1.0.1` built with
+* Version `1.1.0` built with
   * typescript version: 2.6.2
   * node version: 4.1.1
   * amdclean version: 2.7.0
-  * Closure Compiler version: 20130227 (Built on: 2017/09/14 12:51)
+  * Closure Compiler version: v20200517 (Built on: 2020-05-18 22:36)
+
 
 1. `git clone https://github.com/sufianrhazi/simpledom.git`
 2. `cd simpledom`
@@ -37,11 +38,17 @@ import * as dom from '@srhazi/simpledom';
 // Typesafe document.querySelector()
 let form: HTMLFormElement = dom.one(HTMLFormElement, 'form.login');
 
+// Typesafe document.querySelector()
+let maybeForm: HTMLFormElement | undefined = dom.ge(HTMLFormElement, 'form.login');
+
 // Typesafe document.querySelectorAll()
 let buttons: HTMLButtonElement[] = dom.all(HTMLButtonElement, 'button.primary');
 
 // Typesafe el.querySelector()
 let submit: HTMLButtonElement = dom.oneFrom(form, HTMLButtonElement, 'button.submit');
+
+// Typesafe el.querySelector()
+let maybeSubmit: HTMLButtonElement | undefined= dom.oneFrom(form, HTMLButtonElement, 'button.submit');
 
 // Typesafe el.querySelectorAll()
 let formCheckboxes: HTMLInputElement[] = dom.allFrom(form, HTMLInputElement, 'input[type="checkbox"]');
