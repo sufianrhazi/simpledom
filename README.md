@@ -16,7 +16,7 @@ A tiny, simple, strict, typescript-oriented DOM manipulation API.
 ## Building
 
 * Note: Minified standalone build depends on [closure-compiler](http://code.google.com/closure/compiler).
-* Version `1.1.0` built with
+* Version `1.2.0` built with
   * typescript version: 2.6.2
   * node version: 4.1.1
   * amdclean version: 2.7.0
