@@ -19,9 +19,9 @@ export class TypeMismatch extends SimpleDOMError {}
 
 /**
  * Return the first element of type `kind` that matches `selector` from the document.
- * 
+ *
  * If the first element that matches `selector` is not of type `kind`, an exception is thrown.
- * 
+ *
  * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param selector CSS selector to use for the search
  */
@@ -30,10 +30,22 @@ export function one<T extends Element>(kind: Constructor<T>, selector: string): 
 }
 
 /**
+ * Return the first element of type `kind` that matches `selector` from the document, or undefined
+ *
+ * If the first element that matches `selector` is not of type `kind`; or an element is not found, undefined is returned.
+ *
+ * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
+ * @param selector CSS selector to use for the search
+ */
+export function get<T extends Element>(kind: Constructor<T>, selector: string): T | undefined {
+    return getFrom(document, kind, selector);
+}
+
+/**
  * Return the first element of type `kind` that matches `selector` from the `root` node.
- * 
+ *
  * If the first element that matches `selector` is not of type `kind`, an exception is thrown.
- * 
+ *
  * @param root the element or document subtree to search
  * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param selector CSS selector to use for the search
@@ -49,11 +61,31 @@ export function oneFrom<T extends Element>(root: Element | Document, kind: Const
     return el;
 }
 
+
+/**
+ * Return the first element of type `kind` that matches `selector` from the `root` node.
+ *
+ * If the first element that matches `selector` is not of type `kind`, an exception is thrown.
+ *
+ * @param root the element or document subtree to search
+ * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
+ * @param selector CSS selector to use for the search
+ */
+export function getFrom<T extends Element>(root: Element | Document, kind: Constructor<T>, selector: string): T | undefined {
+    var el = root.querySelector(selector);
+    if (el === null) {
+        return undefined;
+    }
+    if (!isConstructedBy(el, kind)) {
+        return undefined;
+    }
+    return el;
+}
 /**
  * Return all of the elements of type `kind` that match `selector` from the `document`.
- * 
+ *
  * If any of the elements that match `selector` is not of type `kind`, an exception is thrown.
- * 
+ *
  * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param selector CSS selector to use for the search
  */
@@ -63,9 +95,9 @@ export function all<T extends Element>(kind: Constructor<T>, selector: string): 
 
 /**
  * Return all of the elements of type `kind` that match `selector` from the provided `root` node.
- * 
+ *
  * If any of the elements that match `selector` is not of type `kind`, an exception is thrown.
- * 
+ *
  * @param root the element or document subtree to search
  * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
  * @param selector CSS selector to use for the search
@@ -82,7 +114,7 @@ export function allFrom<T extends Element>(root: Element | Document, kind: Const
  * Listen for DOM events that bubble up (or capture) through `root` of type
  * `type` that are from a source within the set of subtrees that match
  * `selector`.
- * 
+ *
  * @param root element that is the root of events to care about
  * @param type the event type to listen for
  * @param kind the class of element to look for (HTMLCanvasElement, HTMLInputElement, etc...)
@@ -225,7 +257,7 @@ export function on<E extends Element>(
 
 /**
  * Build a DOM subtree that has a single root from an html string.
- * 
+ *
  * @param html a valid HTML string
  * @param doc the owning document of the DOM subtree (defaults to `document`)
  */
@@ -242,7 +274,7 @@ export function build(html: string, doc: Document=document): Element {
 
 /**
  * Build a DOM subtree that has any number of roots from an html string.
- * 
+ *
  * @param html a valid HTML string
  * @param doc the owning document of the DOM subtree (defaults to `document`)
  */
